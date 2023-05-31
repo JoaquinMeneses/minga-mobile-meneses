@@ -37,6 +37,7 @@ export default function Login() {
                 placeholderTextColor="#f3a9cc" // Cambiar a color rosado
                 value={email}
                 onChangeText={text => setEmail(text)}
+                autoCapitalize="none"
             />
             <TextInput
                 style={styles.input}
