@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Importar el hook useNavigation
+import { useNavigation } from '@react-navigation/native';
 import { API_URL } from 'react-native-dotenv';
 
 export default function Login() {
@@ -12,8 +12,11 @@ export default function Login() {
     const [inputError, setInputError] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleForm = () => {
+        setLoading(true);
+
         const dataUser = {
             email: email,
             password: password,
@@ -25,13 +28,20 @@ export default function Login() {
                 console.log(res.data.message);
                 AsyncStorage.setItem('token', res.data.token);
                 AsyncStorage.setItem('user', JSON.stringify(res.data.user));
-                navigation.navigate('Home'); // Redirigir al componente Home utilizando la navegación
+                setLoading(false);
+                navigation.navigate('Home');
             })
             .catch((err) => {
-                const errorMessages = err.response.data.message;
+                let errorMessages = err.response.data.message;
+                if (!Array.isArray(errorMessages)) {
+                    errorMessages = [errorMessages];
+                }
                 console.log(errorMessages);
                 setErrors(errorMessages);
                 setInputError(true);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             });
     };
 
@@ -68,8 +78,12 @@ export default function Login() {
                     ))}
                 </View>
             )}
-            <Pressable style={styles.button} onPress={handleForm}>
-                <Text style={styles.buttonText}>Sign In</Text>
+            <Pressable style={styles.button} onPress={handleForm} disabled={loading}>
+                {loading ? (
+                    <ActivityIndicator color="white" size="small" />
+                ) : (
+                    <Text style={styles.buttonText}>Sign In</Text>
+                )}
             </Pressable>
             <View style={styles.orContainer}>
                 <View style={styles.orBorder} />
