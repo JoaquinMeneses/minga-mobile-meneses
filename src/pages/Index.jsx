@@ -12,6 +12,14 @@ export default function Index() {
                 <View style={styles.content}>
                     <Text style={styles.title}>Welcome to Minga</Text>
                     <Login />
+                    
+                    {/* Añade el borde blanco y la palabra "or" */}
+                    <View style={styles.orContainer}>
+                        <View style={styles.orBorder} />
+                        <Text style={styles.orText}>OR</Text>
+                        <View style={styles.orBorder} />
+                    </View>
+                    
                     <Register />
                 </View>
                 <View style={styles.footer}>
@@ -42,6 +50,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginBottom: 8,
         marginTop: 50
+    },
+    orContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    orBorder: {
+        flex: 1,
+        height: 1,
+        backgroundColor: 'white',
+    },
+    orText: {
+        color: 'white',
+        paddingHorizontal: 10,
     },
     footer: {
         alignItems: 'center',
