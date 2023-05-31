@@ -1,71 +1,63 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
+import { API_URL } from 'react-native-dotenv';
 
 export default function Login() {
-    const email = useRef()
-    const password = useRef()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigation = useNavigation();
 
-    const handleForm = (e) => {
-
-        e.preventDefault()
-
-        let inputEmail = email.current.value
-        let inputPassword = password.current.value
-
-        let dataUser = {
-            email: inputEmail,
-            password: inputPassword
+    const handleForm = () => {
+        const dataUser = {
+            email: email,
+            password: password
         }
 
-        axios.post(apiUrl + "auth/signin", dataUser)
+        axios.post(API_URL + "auth/signin", dataUser)
             .then(res => {
-                console.log(res)
-                localStorage.setItem("token", res.data.token)
-                localStorage.setItem("user", JSON.stringify(res.data.user))
-                Swal.fire({
-                    title: 'Welcome!',
-                    icon: 'success',
-                    showConfirmButton: true,
-                    confirmButtonText: 'OK',
-                    allowOutsideClick: false
-                })
-                navigate("/")
+                console.log(res.data.message);
+                AsyncStorage.setItem("token", res.data.token);
+                AsyncStorage.setItem("user", JSON.stringify(res.data.user));
+                navigation.navigate('Home'); // Redirigir al componente Home
             })
             .catch(err => {
-                console.log(err.response.data.message)
-                Swal.fire(`${err.response.data.message}`)
-            })
-
-
-
+                console.log(err.response.data.message);
+            });
     }
+
     return (
         <View style={styles.container}>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
+                placeholderTextColor="#f3a9cc" // Cambiar a color rosado
                 value={email}
+                onChangeText={text => setEmail(text)}
             />
             <TextInput
                 style={styles.input}
                 placeholder="Password"
+                placeholderTextColor="#f3a9cc" // Cambiar a color rosado
                 value={password}
+                onChangeText={text => setPassword(text)}
                 secureTextEntry
             />
             <Pressable
                 style={styles.button}
-                onPress={() => console.log('Sign In pressed')}>
+                onPress={handleForm}>
                 <Text style={styles.buttonText}>Sign In</Text>
             </Pressable>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '100%',
         alignItems: 'center',
     },
     input: {
@@ -76,12 +68,13 @@ const styles = StyleSheet.create({
         width: '60%',
     },
     button: {
-        backgroundColor: '#443874',
+        backgroundColor: '#f3a9cc',
         width: '60%',
         paddingTop: 8,
         paddingBottom: 8,
         marginTop: 8,
         alignItems: 'center',
+        borderRadius: 10,
     },
     buttonText: {
         color: 'white',

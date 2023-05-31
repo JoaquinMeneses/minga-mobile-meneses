@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, ImageBackground, StyleSheet } from 'react-native';
 import Login from '../components/Login';
+import Register from '../components/Register';
 
 const image = { uri: 'https://i.postimg.cc/PxNmn6z6/Pixerl-Art.jpg' };
 
@@ -11,6 +12,7 @@ export default function Index() {
                 <View style={styles.content}>
                     <Text style={styles.title}>Welcome to Minga</Text>
                     <Login />
+                    <Register />
                 </View>
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Created by Joaquin Meneses</Text>
@@ -31,15 +33,15 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        marginTop: '15%',
+        marginTop: '30%',
         alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         color: 'white',
         fontWeight: 'bold',
         fontSize: 18,
         marginBottom: 8,
+        marginTop: 50
     },
     footer: {
         alignItems: 'center',
