@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import MenuNavigation from '../components/MenuNavigation';
 
-export default function Home() {
+export default function Mangas() {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Home</Text>
+            <Text style={styles.text}>Mangas</Text>
             <MenuNavigation />
         </View>
     );
@@ -14,7 +14,7 @@ export default function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'green',
+        backgroundColor: 'blue',
         justifyContent: 'center',
         alignItems: 'center',
     },
