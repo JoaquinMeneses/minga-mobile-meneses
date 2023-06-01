@@ -24,6 +24,10 @@ export default function Mangas() {
         getUser()
     }, [])
 
+    const handleToggleView = () => {
+        navigation.navigate('Home');
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>¡Gracias por registrarte!</Text>
@@ -40,6 +44,10 @@ export default function Mangas() {
             <Text style={styles.text}>- Acceso a funciones exclusivas</Text>
             <Text style={styles.text}>- Recomendaciones personalizadas</Text>
             <Text style={styles.text}>- Mostrar información del usuario (nombre, foto, etc.)</Text>
+
+            <Pressable onPress={handleToggleView} style={styles.button}>
+                <Text style={styles.buttonText}>Go to home</Text>
+            </Pressable>
 
         </View>
     )
@@ -74,5 +82,19 @@ const styles = StyleSheet.create({
         height: 100,
         borderRadius: 50,
         marginBottom: 32,
+    },
+    button: {
+        backgroundColor: '#f3a9cc',
+        width: '60%',
+        paddingTop: 8,
+        paddingBottom: 8,
+        marginTop: 8,
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 })

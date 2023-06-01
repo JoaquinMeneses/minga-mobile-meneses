@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     },
     flatList: {
         backgroundColor: '#24282d',
+        marginBottom: 15,
     },
     loadingContainer: {
         flex: 1,
