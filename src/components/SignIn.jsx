@@ -8,42 +8,29 @@ import { API_URL } from 'react-native-dotenv';
 const background = { uri: 'https://i.postimg.cc/PxNmn6z6/Pixerl-Art.jpg' };
 const logo = { uri: 'https://i.postimg.cc/T3vVNcfF/Logo.png' };
 
-export default function Register() {
+export default function SignIn() {
     const navigation = useNavigation(); // Obtener la navegación
 
     const [errors, setErrors] = useState([]);
     const [inputError, setInputError] = useState(false);
-    const [name, setName] = useState('');
-    const [photo, setPhoto] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            // Resetear los estados cuando se enfoca la vista
             setErrors([]);
             setInputError(false);
-            setName('');
-            setPhoto('');
             setEmail('');
             setPassword('');
             setLoading(false);
         });
 
-        // Limpiar el efecto cuando se desmonta el componente
         return unsubscribe;
     }, [navigation]);
 
     const handleForm = () => {
         setLoading(true);
-
-        const dataRegister = {
-            name: name,
-            photo: photo,
-            email: email,
-            password: password,
-        };
 
         const dataUser = {
             email: email,
@@ -51,24 +38,13 @@ export default function Register() {
         };
 
         axios
-            .post(API_URL + 'auth/signup', dataRegister)
+            .post(API_URL + 'auth/signin', dataUser)
             .then((res) => {
-                axios
-                    .post(API_URL + 'auth/signin', dataUser)
-                    .then((res) => {
-                        AsyncStorage.setItem('user', JSON.stringify(res.data.user));
-                        console.log(res.data.message);
-                        AsyncStorage.setItem('token', res.data.token);
-                        setLoading(false);
-                        navigation.navigate('UserRegistered');
-                    })
-                    .catch((err) => {
-                        const errorMessages = err.response.data.message;
-                        console.log(errorMessages);
-                        setErrors(errorMessages);
-                        setInputError(true);
-                        setLoading(false);
-                    });
+                console.log(res.data.message);
+                AsyncStorage.setItem('token', res.data.token);
+                AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+                setLoading(false);
+                navigation.navigate('Home');
             })
             .catch((err) => {
                 let errorMessages = err.response.data.message;
@@ -85,7 +61,7 @@ export default function Register() {
     }
 
     const handleToggleView = () => {
-        navigation.navigate('SignIn');
+        navigation.navigate('Register');
     }
 
     return (
@@ -93,17 +69,6 @@ export default function Register() {
             <ImageBackground source={background} resizeMode="cover" style={styles.imageBackground}>
                 <View style={styles.content}>
                     <Image source={logo} resizeMode="cover" style={styles.logo} />
-                    <TextInput
-                        style={[
-                            styles.input,
-                            inputError && { borderBottomColor: 'red' },
-                        ]}
-                        placeholder="Name"
-                        placeholderTextColor="#f3a9cc"
-                        value={name}
-                        onChangeText={(text) => setName(text)}
-                        autoCapitalize="none"
-                    />
                     <TextInput
                         style={[
                             styles.input,
@@ -126,17 +91,6 @@ export default function Register() {
                         onChangeText={(text) => setPassword(text)}
                         secureTextEntry
                     />
-                    <TextInput
-                        style={[
-                            styles.input,
-                            inputError && { borderBottomColor: 'red' },
-                        ]}
-                        placeholder="Photo"
-                        placeholderTextColor="#f3a9cc"
-                        value={photo}
-                        onChangeText={(text) => setPhoto(text)}
-                        autoCapitalize="none"
-                    />
                     {inputError && (
                         <View style={styles.errorContainer}>
                             {errors.map((error, index) => (
@@ -146,21 +100,21 @@ export default function Register() {
                             ))}
                         </View>
                     )}
-                    <Pressable style={styles.button} onPress={handleForm}>
+                    <Pressable style={styles.button} onPress={handleForm} disabled={loading}>
                         {loading ? (
                             <ActivityIndicator color="white" size="small" />
                         ) : (
-                            <Text style={styles.buttonText}>Register</Text>
+                            <Text style={styles.buttonText}>Sign In</Text>
                         )}
                     </Pressable>
                     <Pressable
                         style={styles.orContainer}>
                         <View style={styles.orBorder} />
-                        <Text style={styles.orText}>Already have an account? </Text>
+                        <Text style={styles.orText}>Don't have an account yet? </Text>
                         <Text
                             style={styles.handleToggleView}
                             onPress={handleToggleView}>
-                            Sign In
+                            Register
                         </Text>
                         <View style={styles.orBorder} />
                     </Pressable>

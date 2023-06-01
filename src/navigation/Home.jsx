@@ -5,7 +5,7 @@ import MenuNavigation from '../components/MenuNavigation';
 export default function Home() {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Home</Text>
+            <Text style={styles.text}>Welcome to your favorite manga reader</Text>
             <MenuNavigation />
         </View>
     );

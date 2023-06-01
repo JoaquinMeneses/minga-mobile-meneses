@@ -1,6 +1,6 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import MenuNavigation from '../components/MenuNavigation';
+import React from 'react'
+import { Text, View, StyleSheet } from 'react-native'
+import MenuNavigation from '../components/MenuNavigation'
 
 export default function Mangas() {
     return (
@@ -8,7 +8,7 @@ export default function Mangas() {
             <Text style={styles.text}>Mangas</Text>
             <MenuNavigation />
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
     text: {
         color: 'white',
     },
-});
+})

@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Image, Text, View, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react'
+import { Image, Text, View, StyleSheet } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const notFoundUser = { uri: 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg' };
+const notFoundUser = { uri: 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg' }
 
 export default function Mangas() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null)
 
     useEffect(() => {
         const getUser = async () => {
             try {
-                const userData = await AsyncStorage.getItem('user');
+                const userData = await AsyncStorage.getItem('user')
                 if (userData) {
-                    const parsedUser = JSON.parse(userData);
-                    setUser(parsedUser);
-                    console.log(parsedUser);
+                    const parsedUser = JSON.parse(userData)
+                    setUser(parsedUser)
+                    console.log(parsedUser)
                 }
             } catch (error) {
-                console.log('Error retrieving user from AsyncStorage:', error);
+                console.log('Error retrieving user from AsyncStorage:', error)
             }
-        };
+        }
 
-        getUser();
-    }, []);
+        getUser()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -42,7 +42,7 @@ export default function Mangas() {
             <Text style={styles.text}>- Mostrar información del usuario (nombre, foto, etc.)</Text>
 
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     title: {
+        color: 'white',
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 16,
-        color: 'white',
     },
     subtitle: {
         fontSize: 18,
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginBottom: 32,
     },
-});
+})
