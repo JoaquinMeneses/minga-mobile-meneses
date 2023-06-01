@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Image, Text, View, StyleSheet } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
 
 const notFoundUser = { uri: 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg' }
 
 export default function Mangas() {
     const [user, setUser] = useState(null)
+
+    const navigation = useNavigation()
 
     useEffect(() => {
         const getUser = async () => {

@@ -1,13 +1,12 @@
 import React from 'react'
-import { View, Text, ImageBackground, StyleSheet, Pressable, Image } from 'react-native'
+import { View, Text, ImageBackground, StyleSheet, Pressable, Image, StatusBar } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 const background = { uri: 'https://i.postimg.cc/PxNmn6z6/Pixerl-Art.jpg' }
 const logo = { uri: 'https://i.postimg.cc/T3vVNcfF/Logo.png' }
 
 export default function Index() {
-
-    const navigation = useNavigation() // Obtener la navegación
+    const navigation = useNavigation()
 
     const handleToggleView = () => {
         navigation.navigate('SignIn')
