@@ -15,12 +15,13 @@ export default function App() {
     return (
         <NavigationContainer>
             <Drawer.Navigator>
-                <Drawer.Screen name="Index" component={Index} options={{ headerShown: false }} />
-                <Drawer.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
-                <Drawer.Screen name="Register" component={Register} options={{ headerShown: false }} />
                 <Drawer.Screen name="Home" component={Home} options={{ headerShown: false }} />
                 <Drawer.Screen name="Mangas" component={Mangas} options={{ headerShown: false }} />
                 <Drawer.Screen name="UserRegistred" component={UserRegistred} options={{ headerShown: false }} />
+                
+                <Drawer.Screen name="Index" component={Index} options={{ headerShown: false }} />
+                <Drawer.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+                <Drawer.Screen name="Register" component={Register} options={{ headerShown: false }} />
             </Drawer.Navigator>
         </NavigationContainer>
     );

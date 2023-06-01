@@ -1,27 +1,27 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
-import { API_URL } from 'react-native-dotenv'
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { API_URL } from 'react-native-dotenv';
 
 export default function MenuNavigation() {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
 
     const handleHome = () => {
-        navigation.navigate('Home')
-        console.log('Home')
-    }
+        navigation.navigate('Home');
+        console.log('Home');
+    };
 
     const handleMangas = () => {
-        navigation.navigate('Mangas')
-        console.log('Mangas')
-    }
+        navigation.navigate('Mangas');
+        console.log('Mangas');
+    };
 
-    async function logout() {
+    const confirmLogout = async () => {
         try {
             const token = await AsyncStorage.getItem('token');
-            let headers = { headers: { 'Authorization': `Bearer ${token}` } };
+            let headers = { headers: { Authorization: `Bearer ${token}` } };
             await axios.post(API_URL + 'auth/signout', null, headers);
 
             await AsyncStorage.removeItem('token');
@@ -29,12 +29,22 @@ export default function MenuNavigation() {
 
             navigation.navigate('Index');
 
-            console.log('Logout exitoso');
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
+    const showLogoutConfirmation = () => {
+        Alert.alert(
+            'Confirm Logout',
+            'Are you sure you want to logout?',
+            [
+                { text: 'No' },
+                { text: 'Yes', onPress: confirmLogout },
+            ],
+            { cancelable: false }
+        );
+    };
 
     return (
         <View style={styles.container}>
@@ -45,12 +55,12 @@ export default function MenuNavigation() {
                 <TouchableOpacity style={styles.navItem} onPress={handleMangas}>
                     <Text style={styles.navText}>Mangas</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navItem} onPress={logout}>
+                <TouchableOpacity style={styles.navItem} onPress={showLogoutConfirmation}>
                     <Text style={styles.navText}>Logout</Text>
                 </TouchableOpacity>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -58,7 +68,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        backgroundColor: 'black',
+        backgroundColor: '#1e1e1e',
     },
     navBar: {
         flexDirection: 'row',
@@ -67,9 +77,10 @@ const styles = StyleSheet.create({
     navItem: {
         flex: 1,
         alignItems: 'center',
+        paddingVertical: 10,
     },
     navText: {
-        color: 'white',
-        fontSize: 18,
+        color: '#ffffff',
+        fontSize: 16,
     },
-})
+});
