@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, StyleSheet, SafeAreaView, StatusBar, View, Image } from 'react-native';
+import { Text, StyleSheet, SafeAreaView, View, Image, TouchableOpacity, Modal } from 'react-native';
 import MenuNavigation from '../components/MenuNavigation';
 import store from '../store/store';
 import axios from 'axios';
@@ -26,6 +26,12 @@ export default function DetailManga({ route }) {
             .catch(error => console.log(error));
     }, []);
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!modalVisible);
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <Image source={{ uri: manga.cover_photo }} style={styles.backgroundImage} />
@@ -45,7 +51,26 @@ export default function DetailManga({ route }) {
                     )}
                 </View>
                 <Text style={styles.description}>{manga.description}</Text>
+                <TouchableOpacity style={[styles.button, { backgroundColor: categories.find(category => category._id === manga.category_id)?.color || 'black' }]} onPress={toggleModal}>
+                    <Text style={styles.buttonText}>Read Manga</Text>
+                </TouchableOpacity>
             </View>
+
+            <Modal
+                visible={modalVisible}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={toggleModal}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalText}>Functionality in progress</Text>
+                        <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+                            <Text style={styles.closeButtonText}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
 
             <MenuNavigation />
         </SafeAreaView>
@@ -108,6 +133,50 @@ const styles = StyleSheet.create({
     description: {
         color: 'white',
         fontSize: 16,
+        textAlign: 'center',
+    },
+    button: {
+        width: "60%",
+        backgroundColor: '#FF6347',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        marginTop: 16,
+        alignSelf: 'center',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 8,
+    },
+    modalText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 16,
+        textAlign: 'center',
+    },
+    closeButton: {
+        backgroundColor: 'red',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+    },
+    closeButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
         textAlign: 'center',
     },
 });
