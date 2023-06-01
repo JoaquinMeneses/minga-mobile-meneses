@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import { API_URL } from 'react-native-dotenv';
 
 export default function MenuNavigation() {
     const navigation = useNavigation();
+    const [logoutConfirmationVisible, setLogoutConfirmationVisible] = useState(false);
 
     const handleHome = () => {
         navigation.navigate('Home');
@@ -34,16 +35,8 @@ export default function MenuNavigation() {
         }
     };
 
-    const showLogoutConfirmation = () => {
-        Alert.alert(
-            'Confirm Logout',
-            'Are you sure you want to logout?',
-            [
-                { text: 'No' },
-                { text: 'Yes', onPress: confirmLogout },
-            ],
-            { cancelable: false }
-        );
+    const toggleLogoutConfirmation = () => {
+        setLogoutConfirmationVisible(!logoutConfirmationVisible);
     };
 
     return (
@@ -55,10 +48,29 @@ export default function MenuNavigation() {
                 <TouchableOpacity style={styles.navItem} onPress={handleMangas}>
                     <Text style={styles.navText}>Mangas</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.navItem} onPress={showLogoutConfirmation}>
+                <TouchableOpacity style={styles.navItem} onPress={toggleLogoutConfirmation}>
                     <Text style={styles.navText}>Logout</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal
+                visible={logoutConfirmationVisible}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={toggleLogoutConfirmation}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalText}>Are you sure you want to logout?</Text>
+                        <TouchableOpacity style={[styles.button, { backgroundColor: 'green' }]} onPress={confirmLogout}>
+                            <Text style={styles.buttonText}>Yes</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.button, { backgroundColor: 'red' }]} onPress={toggleLogoutConfirmation}>
+                            <Text style={styles.buttonText}>No</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -82,5 +94,35 @@ const styles = StyleSheet.create({
     navText: {
         color: '#ffffff',
         fontSize: 16,
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 8,
+    },
+    modalText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 16,
+        textAlign: 'center',
+    },
+    button: {
+        backgroundColor: '#FF6347',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
