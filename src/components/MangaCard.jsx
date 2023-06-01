@@ -1,24 +1,27 @@
 import React from 'react';
 import { Text, StyleSheet, Image, View, Pressable } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const MangaCard = ({ manga, categories }) => {
+    const navigation = useNavigation(); // Obtener la navegación
+
     const category = categories.find((category) => category._id === manga.category_id);
     const textColor = category ? category.color : 'black';
 
-    const handlePress = () => {
-        console.log("Implementación a futuro de detalles");
+    const handleToggleView = () => {
+        navigation.navigate('DetailManga', { manga });
     };
 
     return (
         <View style={styles.card}>
             <View style={styles.contentContainer}>
                 <Text style={styles.title}>{manga.title}</Text>
-                <Pressable onPress={handlePress} style={[styles.buttonStyle, { backgroundColor: textColor }]}>
+                <Pressable onPress={handleToggleView} style={[styles.buttonStyle, { backgroundColor: textColor }]}>
                     <Text style={styles.buttonText}>View manga</Text>
                 </Pressable>
             </View>
             <Image source={{ uri: manga.cover_photo }} style={styles.image} />
-        </View >
+        </View>
     );
 };
 
@@ -26,8 +29,8 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: '#ebebeb',
         flexDirection: 'row',
-        marginHorizontal: "10%",
-        marginBottom: "5%",
+        marginHorizontal: '10%',
+        marginBottom: '5%',
         borderRadius: 20,
     },
     contentContainer: {
@@ -58,7 +61,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         textAlign: 'center',
-    }
+    },
 });
 
 export default MangaCard;
