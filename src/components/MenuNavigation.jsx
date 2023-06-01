@@ -1,19 +1,40 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
+import { API_URL } from 'react-native-dotenv'
 
 export default function MenuNavigation() {
-    const navigation = useNavigation();
+    const navigation = useNavigation()
 
     const handleHome = () => {
-        navigation.navigate('Home');
-        console.log('Home');
-    };
+        navigation.navigate('Home')
+        console.log('Home')
+    }
 
     const handleMangas = () => {
-        navigation.navigate('Mangas');
-        console.log('Mangas');
-    };
+        navigation.navigate('Mangas')
+        console.log('Mangas')
+    }
+
+    async function logout() {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            let headers = { headers: { 'Authorization': `Bearer ${token}` } };
+            await axios.post(API_URL + 'auth/signout', null, headers);
+
+            await AsyncStorage.removeItem('token');
+            await AsyncStorage.removeItem('user');
+
+            navigation.navigate('Index');
+
+            console.log('Logout exitoso');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     return (
         <View style={styles.container}>
@@ -24,9 +45,12 @@ export default function MenuNavigation() {
                 <TouchableOpacity style={styles.navItem} onPress={handleMangas}>
                     <Text style={styles.navText}>Mangas</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.navItem} onPress={logout}>
+                    <Text style={styles.navText}>Logout</Text>
+                </TouchableOpacity>
             </View>
         </View>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -48,4 +72,4 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 18,
     },
-});
+})
