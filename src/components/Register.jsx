@@ -9,7 +9,7 @@ const background = { uri: 'https://i.postimg.cc/PxNmn6z6/Pixerl-Art.jpg' };
 const logo = { uri: 'https://i.postimg.cc/T3vVNcfF/Logo.png' };
 
 export default function Register() {
-    const navigation = useNavigation(); // Obtener la navegación
+    const navigation = useNavigation();
 
     const [errors, setErrors] = useState([]);
     const [inputError, setInputError] = useState(false);
@@ -60,7 +60,7 @@ export default function Register() {
                         console.log(res.data.message);
                         AsyncStorage.setItem('token', res.data.token);
                         setLoading(false);
-                        navigation.navigate('UserRegistered');
+                        navigation.navigate('SignIn');
                     })
                     .catch((err) => {
                         const errorMessages = err.response.data.message;
